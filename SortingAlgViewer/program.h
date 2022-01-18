@@ -1,6 +1,9 @@
 #pragma once
-#include <list>
+#include <vector>
 #include "listElement.h"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <chrono>
 
 class program {
 public:
@@ -9,11 +12,19 @@ public:
 
 	void mainLoop();
 private:
-	std::list<listElement> lines;
+	int programFPS;
+	std::vector<listElement> lines;
 	sf::RenderWindow window;
 
+	std::chrono::time_point<std::chrono::high_resolution_clock> storedTimePoint;
+
+	sf::Font font;
+	sf::Text text;
+
 	//Helper methods
-	std::list<listElement> makeList(int numLines);
+	std::vector<listElement> makeList(int numLines);
 	void handleEvents();
-	void drawLines();
+	void handleMouseClick();
+	void updateLines();
+	int calcFPS(std::chrono::time_point<std::chrono::high_resolution_clock>& stored);
 };
