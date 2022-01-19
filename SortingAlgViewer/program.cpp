@@ -1,9 +1,12 @@
 #include "program.h"
 #include "settings.h"
+#include <algorithm>
+#include <random>
+#include <iostream>
 
 //Constructor and destructor
 program::program() : programFPS(0){
-	lines = makeList(238);
+	lines = makeList(239);
 	window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Sorting Algorithm Viewer", 7U, sf::ContextSettings(0, 0, 0));
 	storedTimePoint = std::chrono::high_resolution_clock::now();
 
@@ -15,7 +18,21 @@ program::~program() {
 	
 }
 
+//Initialization
+std::vector<listElement> program::makeList(int numLines) {
+	auto lines = std::vector<listElement>();
+	for (int i = 0; i < numLines; i++) {
+		listElement e(i * 3, i);
+		lines.push_back(e);
+	}
+	return lines;
+}
+
+//Main Program Loop
 void program::mainLoop() {
+	std::srand(unsigned(std::time(0)));
+	volatile bool run = true;
+	std::thread t = std::thread(&program::shuffle, this, std::ref(lines), std::ref(run));
 	while (window.isOpen()) {
 		programFPS = calcFPS(storedTimePoint);
 		text.setString(std::to_string(programFPS));
@@ -26,9 +43,11 @@ void program::mainLoop() {
 		updateLines();     //update the list of lines
 		window.display();  //draw any updates to the window
 	}
+	run = false;
+	t.join();
 }
 
-//Private Methods
+//Every Loop
 void program::handleEvents() {
 	sf::Event event;
 	while (window.pollEvent(event)) {
@@ -44,19 +63,11 @@ void program::handleMouseClick() {
 
 }
 
-std::vector<listElement> program::makeList(int numLines) {
-	auto lines = std::vector<listElement>(numLines+1);
-	for (int i = 0, xpos=5; i < numLines; i++, xpos+=5) {
-		listElement e(i*3);
-		e.setPos(xpos, WINDOW_HEIGHT-i*3-5);
-		lines.push_back(e);
-	}
-	return lines;
-}
+
 
 void program::updateLines() {
-	for (auto iter = lines.begin(); iter != lines.end(); iter++) {
-		(*iter).draw(window);
+	for (auto line : lines) {
+		line.draw(window);
 	}
 }
 
@@ -67,4 +78,19 @@ int program::calcFPS(std::chrono::time_point<std::chrono::high_resolution_clock>
 	int fps = fpns / .000000001; //calculate frames per second
 	stored = tp; //current time becomes stored for the next frame
 	return fps;
+}
+
+
+//List Mutation Methods
+void program::shuffle(std::vector<listElement>& vect, volatile bool& run) {
+	//Not really useful, just repeatedly shuffles the vector of lines
+	//Just a demonstration of vector mutation from a different thread
+	while (run) {
+		std::random_shuffle(vect.begin(), vect.end());
+		int i = 0;
+		for (auto& e : vect) {
+			e.setIndex(i++);
+		}
+		sf::sleep(sf::milliseconds(0));
+	}
 }
