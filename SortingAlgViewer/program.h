@@ -1,11 +1,15 @@
 #pragma once
 #include <vector>
+#include <list>
 #include "listElement.h"
+#include "UIButton.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <chrono>
 #include <thread>
+#include <queue>
+#include <functional>
 
 class program {
 public:
@@ -16,6 +20,8 @@ public:
 private:
 	int programFPS;
 	std::vector<listElement> lines;
+	std::vector<UIButton> UIElements;
+	std::queue<sf::Event> UIEventQueue;
 	sf::RenderWindow window;
 
 	std::chrono::time_point<std::chrono::high_resolution_clock> storedTimePoint;
@@ -29,13 +35,15 @@ private:
 
 	//Every Loop
 	void handleEvents();
-	void handleMouseClick();
 	void updateLines();
 	int calcFPS(std::chrono::time_point<std::chrono::high_resolution_clock>& stored);
 
-	//List Mutation
-	void shuffle(std::vector<listElement>& vect, volatile bool& run);
-	//Run as separate thread like this
-	//std::thread t = std::thread(&program::shuffle, this, std::ref(lines), std::ref(run));
-
+	//GUI Thread Methods
+	void GUIMain(std::queue<sf::Event>& eventQueue, volatile bool& run);
+	void GUIDraw();
+	 
 };
+
+//List Mutation Functions
+void shuffle(std::vector<listElement>& lines);
+void sort(std::vector<listElement>& lines);

@@ -3,9 +3,10 @@
 #include <algorithm>
 #include <random>
 #include <iostream>
+#include <list>
 
 //Constructor and destructor
-program::program() : programFPS(0){
+program::program() : programFPS(0) {
 	lines = makeList(239);
 	window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Sorting Algorithm Viewer", 7U, sf::ContextSettings(0, 0, 0));
 	storedTimePoint = std::chrono::high_resolution_clock::now();
@@ -13,6 +14,18 @@ program::program() : programFPS(0){
 	font.loadFromFile("arial.ttf");
 	text = sf::Text("", font);
 	text.setFillColor(sf::Color::Red);
+
+	UIElements = std::vector<UIButton>();
+	UIEventQueue = std::queue<sf::Event>();
+
+	UIElements.push_back(UIButton(shuffle,
+								  "Shuffle",
+								  sf::Vector2f(100,50),
+								  sf::Vector2f(100,0)));
+	UIElements.push_back(UIButton(sort,
+								  "Sort",
+								  sf::Vector2f(75,50),
+								  sf::Vector2f(210,0)));
 }
 program::~program() {
 	
@@ -32,7 +45,8 @@ std::vector<listElement> program::makeList(int numLines) {
 void program::mainLoop() {
 	std::srand(unsigned(std::time(0)));
 	volatile bool run = true;
-	std::thread t = std::thread(&program::shuffle, this, std::ref(lines), std::ref(run));
+	std::thread GUIThread(&program::GUIMain, this, std::ref(UIEventQueue), std::ref(run));
+	//std::thread shuffleThread(&program::shuffle, this, std::ref(lines), std::ref(run));
 	while (window.isOpen()) {
 		programFPS = calcFPS(storedTimePoint);
 		text.setString(std::to_string(programFPS));
@@ -41,10 +55,12 @@ void program::mainLoop() {
 		window.draw(text);
 		handleEvents();    //Hadle any events for this frame
 		updateLines();     //update the list of lines
+		GUIDraw();         //Draw the GUI elements
 		window.display();  //draw any updates to the window
 	}
 	run = false;
-	t.join();
+	//shuffleThread.join();
+	GUIThread.join();
 }
 
 //Every Loop
@@ -54,16 +70,10 @@ void program::handleEvents() {
 		//Not sure if else if chain is the way to do this
 		//Switch statemet was too restrictive
 		if (event.type == sf::Event::Closed) window.close();
-		else if (event.type == sf::Event::MouseButtonPressed) handleMouseClick();
+		else if (event.type == sf::Event::MouseButtonPressed) UIEventQueue.push(event);
 
 	}
 }
-
-void program::handleMouseClick() {
-
-}
-
-
 
 void program::updateLines() {
 	for (auto line : lines) {
@@ -81,16 +91,44 @@ int program::calcFPS(std::chrono::time_point<std::chrono::high_resolution_clock>
 }
 
 
-//List Mutation Methods
-void program::shuffle(std::vector<listElement>& vect, volatile bool& run) {
-	//Not really useful, just repeatedly shuffles the vector of lines
-	//Just a demonstration of vector mutation from a different thread
+//GUI Methods
+void program::GUIMain(std::queue<sf::Event>& eventQueue, volatile bool& run) {
 	while (run) {
-		std::random_shuffle(vect.begin(), vect.end());
-		int i = 0;
-		for (auto& e : vect) {
-			e.setIndex(i++);
+		if (eventQueue.empty() != true) {
+			sf::Event e = eventQueue.front();
+			for (auto& element : UIElements) {
+				if (element.getBoundingRect().contains(e.mouseButton.x, e.mouseButton.y)) {
+					element.onClick(lines);
+				}
+			}
+			eventQueue.pop();
 		}
-		sf::sleep(sf::milliseconds(0));
 	}
 }
+
+void program::GUIDraw() {
+	for (auto& e : UIElements) e.draw(window);
+}
+
+
+
+
+
+//List Mutation Methods
+void shuffle(std::vector<listElement>& lines) {
+	std::random_shuffle(lines.begin(), lines.end());
+	int i = 0;
+	for (auto& e : lines) {
+		e.setIndex(i++);
+	}
+}
+
+void sort(std::vector<listElement>& lines) {
+	std::sort(lines.begin(), lines.end());
+	int i = 0;
+	for (auto& e : lines) {
+		e.setIndex(i++);
+	}
+}
+
+

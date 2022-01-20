@@ -150,11 +150,13 @@
     <ClCompile Include="listElement.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="program.cpp" />
+    <ClCompile Include="UIButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="listElement.h" />
     <ClInclude Include="program.h" />
     <ClInclude Include="settings.h" />
+    <ClInclude Include="UIButton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

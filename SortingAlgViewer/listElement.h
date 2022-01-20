@@ -10,11 +10,14 @@ public:
 	//Getters & Setters
 	void setPos(const double x, const double y);
 	void setValue(const int val);
-	int getValue();
+	int getValue() const;
 	void setIndex(const int index);
-	int getIndex();
+	int getIndex() const;
 	//Rendering
 	void draw(sf::RenderWindow& window);
+	//Operator Overloads
+	bool operator<(const listElement e) const;
+	listElement& operator=(const listElement& e);
 
 private:
 	int m_value, m_index;

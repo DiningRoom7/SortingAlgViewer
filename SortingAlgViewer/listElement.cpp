@@ -23,7 +23,7 @@ void listElement::setValue(const int val) {
 	m_rect.setSize(sf::Vector2f(4, val));
 }
 
-int listElement::getValue() {
+int listElement::getValue() const {
 	return m_value;
 }
 
@@ -32,12 +32,25 @@ void listElement::setIndex(const int index) {
 	m_rect.setPosition(indexToXPos(index), valToYPos(m_value));
 }
 
-int listElement::getIndex() {
+int listElement::getIndex() const{
 	return m_index;
 }
 
 void listElement::draw(sf::RenderWindow& window) {
 	window.draw(m_rect);
+}
+
+
+//Operator Overloads
+//Less than overload for std::sort alg
+bool listElement::operator<(const listElement e) const {
+	return m_value < e.getValue();
+}
+//Equals overload for std::sort alg
+listElement& listElement::operator=(const listElement& e){
+	setValue(e.getValue());
+	setIndex(e.getIndex());
+	return *this;
 }
 
 
