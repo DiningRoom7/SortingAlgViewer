@@ -25,21 +25,22 @@ namespace InsertionSort {
 }
 
 namespace QuickSort {
-
+	void quickSort(std::vector<listElement>& array);
 }
 
 namespace BubbleSort {
+	void bubbleSort(std::vector<listElement>& array);
 
 }
 
 namespace HeapSort {
-
+	void heapSort(std::vector<listElement>& array);
 }
 
 namespace RadixSort {
-
+	void radixSort(std::vector<listElement>& array);
 }
 
 namespace BucketSort {
-
+	void bucketSort(std::vector<listElement>& array);
 }

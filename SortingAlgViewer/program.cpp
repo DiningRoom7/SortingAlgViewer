@@ -34,6 +34,10 @@ program::program() : programFPS(0) {
 								  "Merge\nSort",
 								  sf::Vector2f(90, 70),
 								  sf::Vector2f(475, 0)));
+	UIElements.push_back(UIButton(HeapSort::heapSort,
+								  "Heap\nSort",
+								  sf::Vector2f(75, 70),
+								  sf::Vector2f(575, 0)));
 }
 program::~program() {
 	
@@ -54,7 +58,6 @@ void program::mainLoop() {
 	std::srand(unsigned(std::time(0)));
 	volatile bool run = true;
 	std::thread GUIThread(&program::GUIMain, this, std::ref(UIEventQueue), std::ref(run));
-	//std::thread shuffleThread(&program::shuffle, this, std::ref(lines), std::ref(run));
 	while (window.isOpen()) {
 		programFPS = calcFPS(storedTimePoint);
 		text.setString(std::to_string(programFPS));

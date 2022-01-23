@@ -88,3 +88,19 @@ void InsertionSort::insertionSort(std::vector<listElement>& array) {
     }
 }
 
+//Heap sort implementation
+void HeapSort::heapSort(std::vector<listElement>& array) {
+    std::make_heap(array.begin(), array.end());
+    int i = 0;
+    for (auto& e : array) {
+        e.setIndex(i++);
+        std::this_thread::sleep_for(std::chrono::nanoseconds(100));
+    }
+    std::vector<listElement> cpy(array);
+    for (auto iter = array.rbegin(); iter != array.rend(); iter++) {
+        (*iter).setValue(cpy[0].getValue());
+        std::pop_heap(cpy.begin(), cpy.end());
+        cpy.pop_back();
+        std::this_thread::sleep_for(std::chrono::nanoseconds(1000));
+    }
+}
