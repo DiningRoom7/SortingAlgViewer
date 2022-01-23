@@ -3,6 +3,7 @@
 #include <list>
 #include "listElement.h"
 #include "UIButton.h"
+#include "sortAlgs.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>

@@ -5,6 +5,7 @@
 class listElement {
 public:
 	listElement(const int=0, const int=0);
+	listElement(const listElement&);
 	~listElement();
 
 	//Getters & Setters
@@ -13,11 +14,15 @@ public:
 	int getValue() const;
 	void setIndex(const int index);
 	int getIndex() const;
+	void setColor(const sf::Color);
 	//Rendering
 	void draw(sf::RenderWindow& window);
 	//Operator Overloads
 	bool operator<(const listElement e) const;
-	listElement& operator=(const listElement& e);
+	void operator=(const listElement& e);
+	bool operator<=(const listElement& e)const;
+	//List mutation in sorting
+	void swap(listElement& e);
 
 private:
 	int m_value, m_index;

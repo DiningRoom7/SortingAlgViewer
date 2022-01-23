@@ -22,10 +22,18 @@ program::program() : programFPS(0) {
 								  "Shuffle",
 								  sf::Vector2f(100,50),
 								  sf::Vector2f(100,0)));
-	UIElements.push_back(UIButton(sort,
-								  "Sort",
-								  sf::Vector2f(75,50),
+	UIElements.push_back(UIButton(SelectionSort::selectionSort,
+								  "Selection\nSort",
+								  sf::Vector2f(125,70),
 								  sf::Vector2f(210,0)));
+	UIElements.push_back(UIButton(InsertionSort::insertionSort,
+								  "Insertion\nSort",
+								  sf::Vector2f(120, 70),
+								  sf::Vector2f(345, 0)));
+	UIElements.push_back(UIButton(MergeSort::mergeSort,
+								  "Merge\nSort",
+								  sf::Vector2f(90, 70),
+								  sf::Vector2f(475, 0)));
 }
 program::~program() {
 	
@@ -76,7 +84,7 @@ void program::handleEvents() {
 }
 
 void program::updateLines() {
-	for (auto line : lines) {
+	for (auto& line : lines) {
 		line.draw(window);
 	}
 }
@@ -96,7 +104,7 @@ void program::GUIMain(std::queue<sf::Event>& eventQueue, volatile bool& run) {
 	while (run) {
 		if (eventQueue.empty() != true) {
 			sf::Event e = eventQueue.front();
-			for (auto& element : UIElements) {
+			for (auto element : UIElements) {
 				if (element.getBoundingRect().contains(e.mouseButton.x, e.mouseButton.y)) {
 					element.onClick(lines);
 				}
@@ -116,15 +124,19 @@ void program::GUIDraw() {
 
 //List Mutation Methods
 void shuffle(std::vector<listElement>& lines) {
-	std::random_shuffle(lines.begin(), lines.end());
-	int i = 0;
-	for (auto& e : lines) {
-		e.setIndex(i++);
+	auto tp = std::chrono::high_resolution_clock().now(); //get current time
+	while (std::chrono::high_resolution_clock().now() - tp < std::chrono::milliseconds(500)) {
+		std::random_shuffle(lines.begin(), lines.end());
+		int i = 0;
+		for (auto& e : lines) {
+			e.setIndex(i++);
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
 
 void sort(std::vector<listElement>& lines) {
-	std::sort(lines.begin(), lines.end());
+	std::sort(lines.begin(), lines.end() );
 	int i = 0;
 	for (auto& e : lines) {
 		e.setIndex(i++);

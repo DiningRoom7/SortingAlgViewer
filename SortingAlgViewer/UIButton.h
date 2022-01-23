@@ -43,8 +43,7 @@ public:
 	void draw(sf::RenderWindow& window);
 
 	//Event Driven
-	//The member function much be binded to the current instance, otherwise it breaks
-	//Use std::bind(&class::function, this) when calling this function
+	//Member functions do not work
 	void onClick(std::vector<listElement>&);
 
 
@@ -54,4 +53,8 @@ private:
 	sf::Font m_font;
 	sf::Text m_text;
 	sf::Color m_boxColor, m_textColor;
+
+
+	//private methods
+	sf::Vector2f textPos(sf::Vector2f pos);
 };

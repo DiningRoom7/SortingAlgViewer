@@ -54,7 +54,7 @@ sf::Vector2f UIButton::getPos() const {
 }
 void UIButton::setPos(const sf::Vector2f pos) {
 	m_rect.setPosition(pos);
-	m_text.setPosition(pos);
+	m_text.setPosition(textPos(pos));
 }
 
 std::function<void(std::vector<listElement>&)> UIButton::getFunction() const{
@@ -74,3 +74,10 @@ void UIButton::onClick(std::vector<listElement>& vect) {
 }
 
 
+
+//Private Methods
+//Calculate where the text should be positioned to be in the center of the button
+sf::Vector2f UIButton::textPos(sf::Vector2f pos) {
+	int x = pos.x, y = pos.y;
+	return pos;
+}
