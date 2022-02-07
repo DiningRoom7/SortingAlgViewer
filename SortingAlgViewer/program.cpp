@@ -38,6 +38,15 @@ program::program() : programFPS(0) {
 								  "Heap\nSort",
 								  sf::Vector2f(75, 70),
 								  sf::Vector2f(575, 0)));
+	UIElements.push_back(UIButton(BubbleSort::bubbleSort,
+								  "Bubble\nSort",
+								  sf::Vector2f(100, 70),
+								  sf::Vector2f(660, 0)));
+	UIElements.push_back(UIButton(BucketSort::bucketSort,
+								  "Bucket\nSort",
+								  sf::Vector2f(100, 70),
+								  sf::Vector2f(770, 0)));
+	
 }
 program::~program() {
 	

@@ -19,6 +19,7 @@ public:
 	void draw(sf::RenderWindow& window);
 	//Operator Overloads
 	bool operator<(const listElement e) const;
+	bool operator>(const listElement e) const;
 	void operator=(const listElement& e);
 	bool operator<=(const listElement& e)const;
 	//List mutation in sorting

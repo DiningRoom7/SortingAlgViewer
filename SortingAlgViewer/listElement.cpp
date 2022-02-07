@@ -56,6 +56,10 @@ void listElement::draw(sf::RenderWindow& window) {
 bool listElement::operator<(const listElement e) const {
 	return m_value < e.getValue();
 }
+//For use in bubble sort
+bool listElement::operator>(const listElement e) const {
+	return m_value > e.getValue();
+}
 //Equals overload for std::sort alg
 void listElement::operator=(const listElement& e){
 	setValue(e.getValue());

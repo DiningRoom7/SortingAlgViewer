@@ -17,9 +17,6 @@ namespace SelectionSort {
 	void selectionSort(std::vector<listElement>& array);
 }
 
-//Insertion sort gets a bad rep here
-//The contiguous storage nature of vectors makes it hard to insert elements in between others
-//Insertion sort is much faster on data structures better suited to it
 namespace InsertionSort {
 	void insertionSort(std::vector<listElement>& array);
 }
@@ -43,4 +40,8 @@ namespace RadixSort {
 
 namespace BucketSort {
 	void bucketSort(std::vector<listElement>& array);
+}
+
+namespace CountingSort {
+	void countingSort(std::vector<listElement>& array);
 }

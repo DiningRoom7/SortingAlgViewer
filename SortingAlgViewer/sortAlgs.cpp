@@ -88,6 +88,23 @@ void InsertionSort::insertionSort(std::vector<listElement>& array) {
     }
 }
 
+//Quick sort implementation
+void QuickSort::quickSort(std::vector<listElement>& array) {
+
+}
+
+//Bubble sort implemnentation
+void BubbleSort::bubbleSort(std::vector<listElement>& array) {
+    for (int i = 0; i < array.size() - 1; i++) {
+        for (int j = 0; j < array.size() - i - 1; j++) {
+            if (array[j] > array[j + 1]){
+                array[j].swap(array[j + 1]);
+            }
+        }
+        sf::sleep(sf::milliseconds(50));
+    }
+}
+
 //Heap sort implementation
 void HeapSort::heapSort(std::vector<listElement>& array) {
     std::make_heap(array.begin(), array.end());
@@ -103,4 +120,40 @@ void HeapSort::heapSort(std::vector<listElement>& array) {
         cpy.pop_back();
         std::this_thread::sleep_for(std::chrono::nanoseconds(1000));
     }
+}
+
+//Radix sort implementation
+void RadixSort::radixSort(std::vector<listElement>& array) {
+
+}
+
+//Bucket sort implementation
+void BucketSort::bucketSort(std::vector<listElement>& array) {
+    // 1) Create n empty buckets
+    std::vector<std::vector<listElement>> b(array.size());
+
+    // 2) Put array elements
+    // in different buckets
+    for (int i = 0; i < array.size(); i++) {
+        int bi = array[i].getValue()/3; // Index in bucket
+        b[bi].push_back(array[i]);
+    }
+
+    // 3) Sort individual buckets
+    for (int i = 0; i < array.size(); i++)
+        sort(b[i].begin(), b[i].end());
+
+    // 4) Concatenate all buckets into arr[]
+    int index = 0;
+    for (int i = 0; i < array.size(); i++)
+        for (int j = 0; j < b[i].size(); j++) {
+            array[index++].setValue(b[i][j].getValue());
+            sf::sleep(sf::milliseconds(10));
+        }
+
+}
+
+//Counting sort implementation
+void CountingSort::countingSort(std::vector<listElement>& array) {
+
 }
