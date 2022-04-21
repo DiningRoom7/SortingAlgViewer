@@ -1,4 +1,5 @@
 # SortingAlgViewer
 Sorting algorithm visualization like you see in the videos.
 
-Requires a few SFML dlls.
+This is meant to be run on unix systems.
+Rendered using SFML. Download the dependencies yourself.
