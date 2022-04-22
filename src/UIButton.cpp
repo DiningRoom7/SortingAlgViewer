@@ -25,8 +25,8 @@ UIButton::UIButton(const UIButton& button) {
 
 //Getters & Setters
 std::string UIButton::getText() const {
-	//return m_text.getString();
-	return std::string("button");
+	return m_text.getString().toAnsiString();
+	//return std::string("button");
 }
 void UIButton::setText(const std::string text) {
 	m_text.setString(text);
